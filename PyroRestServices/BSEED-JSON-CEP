@@ -1,0 +1,215 @@
+{
+  "epn": {
+    "events": [
+      {
+        "name": "Sensor",
+        "createdDate": "Fri Dec 12 2014",
+        "attributes": [
+          {
+            "name": "Temperatura",
+            "type": "Double",
+            "defaultValue": "1",
+            "dimension": 0,
+            "description": "The certainty that this event happen (value between 0 to 1)"
+          },
+          {
+            "name": "Lectura Acelerometro",
+            "type": "Double",
+            "dimension": 0,
+            "description": "No value means it equals the event detection time, other option is to use one of the defined distribution functions with parameters"
+          }
+        ]
+      },
+      {
+        "name": "AlertaTendencia",
+        "createdDate": "Fri Dec 12 2014",
+        "attributes": [
+          {
+            "name": "Certainty",
+            "type": "Boolean",
+            "defaultValue": "1",
+            "dimension": 0,
+            "description": "The certainty that this event happen (value between 0 to 1)"
+          }
+        ]
+      },
+      {
+        "name": "AlertaCaida",
+        "createdDate": "Fri Dec 12 2014",
+        "attributes": [
+          {
+            "name": "Certainty",
+            "type": "Boolean",
+            "defaultValue": "1",
+            "dimension": 0,
+            "description": "The certainty that this event happen (value between 0 to 1)"
+          }
+        ]
+      },
+      {
+        "name": "AlertaDireccional",
+        "createdDate": "Fri Dec 12 2014",
+        "attributes": [
+          {
+            "name": "SensorProcovadorAlerta",
+            "type": "String",
+            "defaultValue": "1",
+            "dimension": 0,
+            "description": "The certainty that this event happen (value between 0 to 1)"
+          }
+        ]
+      }
+    ],
+    "epas": [
+      {
+        "name": "Alerta Tendencia",
+        "description": "La temperatura se incrementa en m???s de 2???C por periodo",
+        "createdDate": "Fri Dec 12 2014",
+        "epaType": "Sequence",
+        "context": "ForestFire",
+        "inputEvents": [
+          {
+            "name": "Sensor",
+            "alias": "Sensor1",
+            "consumptionPolicy": "Consume",
+            "instanceSelectionPolicy": "First"
+          }
+        ],
+        "computedVariables": [],
+        "assertion": "Sensor1.Temperatura = Sensor1.Temperatura+2",
+        "evaluationPolicy": "Immediate",
+        "cardinalityPolicy": "Single",
+        "internalSegmentation": [],
+        "derivedEvents": [
+          {
+            "name": "AlertaTendencia",
+            "reportParticipants": false,
+            "expressions": {}
+          }
+        ],
+        "derivedActions": []
+      },
+      {
+        "name": "Alerta Caida",
+        "createdDate": "Fri Dec 12 2014",
+        "epaType": "Basic",
+        "context": "ForestFire",
+        "inputEvents": [
+          {
+            "name": "Sensor",
+            "consumptionPolicy": "Consume",
+            "instanceSelectionPolicy": "First"
+          }
+        ],
+        "computedVariables": [],
+        "evaluationPolicy": "Immediate",
+        "cardinalityPolicy": "Single",
+        "internalSegmentation": [],
+        "derivedEvents": [
+          {
+            "name": "AlertaCaida",
+            "reportParticipants": false,
+            "expressions": {}
+          },
+          {
+            "name": "AlertaCaida",
+            "reportParticipants": false,
+            "expressions": {}
+          }
+        ],
+        "derivedActions": []
+      },
+      {
+        "name": "Alerta Direccional",
+        "createdDate": "Fri Dec 12 2014",
+        "epaType": "Sequence",
+        "context": "ForestFire",
+        "inputEvents": [
+          {
+            "name": "Sensor",
+            "alias": "Sensor1",
+            "consumptionPolicy": "Consume",
+            "instanceSelectionPolicy": "First"
+          }
+        ],
+        "computedVariables": [],
+        "assertion": "Sensor1.LecturaAcelerometro != ",
+        "evaluationPolicy": "Immediate",
+        "cardinalityPolicy": "Single",
+        "internalSegmentation": [],
+        "derivedEvents": [
+          {
+            "name": "AlertaDireccional",
+            "reportParticipants": false,
+            "expressions": {}
+          }
+        ],
+        "derivedActions": []
+      }
+    ],
+    "contexts": {
+      "temporal": [
+        {
+          "name": "ForestFire",
+          "createdDate": "Fri Dec 12 2014",
+          "type": "TemporalInterval",
+          "atStartup": true,
+          "neverEnding": true,
+          "initiators": [],
+          "terminators": []
+        }
+      ],
+      "segmentation": [],
+      "composite": []
+    },
+    "consumers": [],
+    "producers": [
+      {
+        "name": "CBProducer",
+        "createdDate": "Wed Dec 10 2014",
+        "type": "Rest",
+        "properties": [
+          {
+            "name": "URL",
+            "value": "http://130.206.127.23:1026"
+          },
+          {
+            "name": "contentType",
+            "value": "text/plain"
+          },
+          {
+            "name": "sendingDelay",
+            "value": "undefined"
+          },
+          {
+            "name": "pollingInterval",
+            "value": "undefined"
+          },
+          {
+            "name": "pollingMode",
+            "value": "BATCH"
+          },
+          {
+            "name": "formatter",
+            "value": "tag"
+          },
+          {
+            "name": "delimiter",
+            "value": ";"
+          },
+          {
+            "name": "tagDataSeparator",
+            "value": "="
+          },
+          {
+            "name": "dateFormat",
+            "value": "default"
+          }
+        ],
+        "events": []
+      }
+    ],
+    "actions": [],
+    "name": "BSEEDProject"
+  }
+}
